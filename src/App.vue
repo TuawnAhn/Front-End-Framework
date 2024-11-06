@@ -99,9 +99,9 @@ const products = [
   </div> -->
 
 <!-- <RouterView /> -->
-<!-- <template>
+<template>
   <div class="product-list">
-    <div v-for="(product, index) in products">
+    <div v-for="(product, index) in products" :key="product.name">
       <div
         v-if="index % 2 === 0"
         style="display: flex; justify-content: flex-start"
@@ -128,7 +128,7 @@ const products = [
       </div>
     </div>
   </div>
-</template> -->
+</template>
 
 <style scoped>
 header {
