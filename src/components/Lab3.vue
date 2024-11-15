@@ -1,45 +1,40 @@
 <script setup lang="ts">
-import Lab3 from './components/Lab3.vue'
-import Lab4 from './components/Lab4.vue'
 import { ref } from 'vue'
 
-// const submitForm = async () => {
-//   isLoading.value = true // Bắt đầu loading
-//   await new Promise(resolve => setTimeout(resolve, 5000)) // Giả lập xử lý mất 2 giây
+const submitForm = async () => {
+  isLoading.value = true
+  await new Promise(resolve => setTimeout(resolve, 2000))
 
-//   if (
-//     sanPhamMoi.value.email === 'anhntph51526@gmail.com' &&
-//     sanPhamMoi.value.password === '123456'
-//   ) {
-//     alert('Đăng nhập thành công')
-//     users.value.push({ ...sanPhamMoi.value })
-//     sanPhamMoi.value.email = ''
-//     sanPhamMoi.value.password = ''
-//   } else {
-//     alert('Đăng nhập thất bại')
-//   }
+  if (
+    sanPhamMoi.value.email === 'anhntph51526@gmail.com' &&
+    sanPhamMoi.value.password === '123456'
+  ) {
+    alert('Đăng nhập thành công')
+    users.value.push({ ...sanPhamMoi.value })
+    sanPhamMoi.value.email = ''
+    sanPhamMoi.value.password = ''
+  } else {
+    alert('Đăng nhập thất bại')
+  }
 
-//   isLoading.value = false // Kết thúc loading
-// }
+  isLoading.value = false
+}
 
-// const sanPhamMoi = ref({
-//   email: '',
-//   password: '',
-// })
+const sanPhamMoi = ref({
+  email: '',
+  password: '',
+})
 
-// const users = ref([])
+const users = ref([])
 
-// const deleteUser = key => {
-//   users.value[key].deleted = true
-// }
-// const isLoading = ref(false) // Trạng thái loading
+const deleteUser = key => {
+  users.value[key].deleted = true
+}
+const isLoading = ref(false)
 </script>
+
 <template>
-  <!-- <div><Lab3 /></div> -->
-  <div><Lab4 /></div>
-</template>
-<!-- <template>
-  <div class="container">
+  <div class="form-container position-relative">
     <div
       v-if="isLoading"
       class="overlay d-flex justify-content-center align-items-center"
@@ -114,7 +109,7 @@ import { ref } from 'vue'
       </tr>
     </tbody>
   </table>
-</template> -->
+</template>
 <style scoped>
 .overlay {
   position: absolute;
