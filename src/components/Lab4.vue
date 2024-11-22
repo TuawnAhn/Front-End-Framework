@@ -36,6 +36,7 @@ const submitForm = () => {
 
   if (!validateEmail(email)) {
     alert('Email không hợp lệ! Vui lòng sử dụng địa chỉ @gmail.com.')
+    alert('Nhập vào mật khẩu')
     return
   }
 

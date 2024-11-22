@@ -1,194 +1,102 @@
-<script setup lang="ts">
-import Lab3 from './components/Lab3.vue'
-import Lab4 from './components/Lab4.vue'
-import { ref } from 'vue'
-
-// const submitForm = async () => {
-//   isLoading.value = true // Bắt đầu loading
-//   await new Promise(resolve => setTimeout(resolve, 5000)) // Giả lập xử lý mất 2 giây
-
-//   if (
-//     sanPhamMoi.value.email === 'anhntph51526@gmail.com' &&
-//     sanPhamMoi.value.password === '123456'
-//   ) {
-//     alert('Đăng nhập thành công')
-//     users.value.push({ ...sanPhamMoi.value })
-//     sanPhamMoi.value.email = ''
-//     sanPhamMoi.value.password = ''
-//   } else {
-//     alert('Đăng nhập thất bại')
-//   }
-
-//   isLoading.value = false // Kết thúc loading
-// }
-
-// const sanPhamMoi = ref({
-//   email: '',
-//   password: '',
-// })
-
-// const users = ref([])
-
-// const deleteUser = key => {
-//   users.value[key].deleted = true
-// }
-// const isLoading = ref(false) // Trạng thái loading
-</script>
 <template>
-  <!-- <div><Lab3 /></div> -->
-  <div><Lab4 /></div>
-</template>
-<!-- <template>
-  <div class="container">
-    <div
-      v-if="isLoading"
-      class="overlay d-flex justify-content-center align-items-center"
-    >
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-    <form
-      class="container p-4 bg-light rounded shadow-sm"
-      @submit.prevent="submitForm"
-      :class="{ 'opacity-50': isLoading }"
-    >
-      <h1 class="text-center">Đăng nhập</h1>
-      <div class="mb-3">
-        <label for="username" class="form-label">Tên đăng nhập</label>
-        <input
-          v-model="sanPhamMoi.email"
-          type="email"
-          class="form-control"
-          id="username"
-          :disabled="isLoading"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input
-          v-model="sanPhamMoi.password"
-          type="password"
-          class="form-control"
-          id="password"
-          :disabled="isLoading"
-        />
-      </div>
-      <button
-        type="submit"
-        class="btn btn-primary shadow-lg text-uppercase fw-bold"
-        :disabled="isLoading"
-      >
-        Submit
-      </button>
-    </form>
-  </div>
-
-  <table class="table" border="1" style="margin-top: 50px">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Tên đăng nhập</th>
-        <th scope="col">Password</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="(user, key) in users"
-        :key="key"
-        :class="{ 'text-decoration-line-through': user.deleted }"
-      >
-        <th scope="row">{{ key + 1 }}</th>
-        <td>{{ user.email }}</td>
-        <td>{{ user.password }}</td>
-        <td>
-          <button
-            @click="deleteUser(key)"
-            class="btn btn-danger"
-            :class="{ 'text-decoration-line-through': user.deleted }"
+  <div>
+    <header class="header">
+      <nav class="navbar">
+        <ul class="menu">
+          <li
+            v-for="item in menuItems"
+            :key="item.name"
+            @click="setActivePage(item.page)"
+            :class="{ active: activePage === item.page }"
           >
-            Xoá
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</template> -->
+            {{ item.name }}
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="content">
+      <component :is="activePage"></component>
+    </main>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import QuanLySanPham from './components/Quanlysanpham.vue'
+import QuanLyDonHang from './components/Quanlydonhang.vue'
+import QuanLyKhachHang from './components/Quanlykhachhang.vue'
+import QuanLyDanhMuc from './components/quanlydanhmuc.vue'
+import ThongKe from './components/Thongke.vue'
+
+export default defineComponent({
+  components: {
+    QuanLySanPham,
+    QuanLyDonHang,
+    QuanLyKhachHang,
+    QuanLyDanhMuc,
+    ThongKe,
+  },
+  setup() {
+    const menuItems = ref([
+      { name: 'Quản lý sản phẩm', page: 'QuanLySanPham' },
+      { name: 'Quản lý đơn hàng', page: 'QuanLyDonHang' },
+      { name: 'Quản lý khách hàng', page: 'QuanLyKhachHang' },
+      { name: 'Quản lý danh mục', page: 'QuanLyDanhMuc' },
+      { name: 'Thống kê', page: 'ThongKe' },
+    ])
+
+    const activePage = ref('QuanLySanPham')
+
+    const setActivePage = (page: string) => {
+      activePage.value = page
+    }
+
+    return { menuItems, activePage, setActivePage }
+  },
+})
+</script>
+
 <style scoped>
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.8);
-  z-index: 10;
+/* Header Styles */
+.header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.opacity-50 {
-  pointer-events: none; /* Vô hiệu hóa các phần tử bên trong */
+.navbar {
+  display: flex;
+  justify-content: center;
 }
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.menu li {
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.menu li:hover {
+  background-color: #0056b3;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.menu li.active {
+  background-color: #0056b3;
+  font-weight: bold;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+/* Main Content */
+.content {
+  padding: 20px;
 }
 </style>
