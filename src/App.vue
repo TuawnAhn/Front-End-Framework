@@ -1,102 +1,106 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+// Import các component
+import listUsers from './components/comments/addUsers.vue'
+import addUsers from './components/comments/index.vue'
+import home from './components/comments/home.vue'
+
+// Theo dõi trạng thái chức năng hiện tại
+const currentView = ref('home')
+
+const changeView = (view: string) => {
+  currentView.value = view
+}
+</script>
+
 <template>
-  <div>
+  <div class="container-fluid">
     <header class="header">
-      <nav class="navbar">
-        <ul class="menu">
-          <li
-            v-for="item in menuItems"
-            :key="item.name"
-            @click="setActivePage(item.page)"
-            :class="{ active: activePage === item.page }"
-          >
-            {{ item.name }}
-          </li>
-        </ul>
-      </nav>
+      <h1 class="header-title">Admin Người Dùng</h1>
     </header>
 
-    <main class="content">
-      <component :is="activePage"></component>
+    <nav class="navbar">
+      <button class="nav-button" @click="changeView('home')">Trang chủ</button>
+      <button class="nav-button" @click="changeView('listUsers')">
+        Thêm người dùng
+      </button>
+      <button class="nav-button" @click="changeView('addUsers')">
+        Xoá người dùng
+      </button>
+    </nav>
+
+    <main class="main-content">
+      <listUsers v-if="currentView === 'listUsers'" />
+      <addUsers v-if="currentView === 'addUsers'" />
+      <home v-if="currentView === 'home'" />
     </main>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import QuanLySanPham from './components/Quanlysanpham.vue'
-import QuanLyDonHang from './components/Quanlydonhang.vue'
-import QuanLyKhachHang from './components/Quanlykhachhang.vue'
-import QuanLyDanhMuc from './components/quanlydanhmuc.vue'
-import ThongKe from './components/Thongke.vue'
-
-export default defineComponent({
-  components: {
-    QuanLySanPham,
-    QuanLyDonHang,
-    QuanLyKhachHang,
-    QuanLyDanhMuc,
-    ThongKe,
-  },
-  setup() {
-    const menuItems = ref([
-      { name: 'Quản lý sản phẩm', page: 'QuanLySanPham' },
-      { name: 'Quản lý đơn hàng', page: 'QuanLyDonHang' },
-      { name: 'Quản lý khách hàng', page: 'QuanLyKhachHang' },
-      { name: 'Quản lý danh mục', page: 'QuanLyDanhMuc' },
-      { name: 'Thống kê', page: 'ThongKe' },
-    ])
-
-    const activePage = ref('QuanLySanPham')
-
-    const setActivePage = (page: string) => {
-      activePage.value = page
-    }
-
-    return { menuItems, activePage, setActivePage }
-  },
-})
-</script>
-
 <style scoped>
-/* Header Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .header {
-  background-color: #007bff;
+  background-color: #343a40;
   color: white;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-title {
+  text-align: center;
+  margin: 0;
 }
 
 .navbar {
   display: flex;
   justify-content: center;
+  margin: 20px 0;
 }
 
-.menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 20px;
-}
-
-.menu li {
-  cursor: pointer;
-  padding: 10px 20px;
+.nav-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
-.menu li:hover {
+.nav-button:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
 }
 
-.menu li.active {
-  background-color: #0056b3;
-  font-weight: bold;
-}
-
-/* Main Content */
-.content {
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  width: 100%;
+  max-width: 1000px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  margin-top: 20px;
 }
 </style>
